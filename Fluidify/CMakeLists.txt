@@ -1,6 +1,3 @@
-cmake_minimum_required(VERSION 3.16)
-project(Fluidify LANGUAGES CXX)
-
 set(CMAKE_PREFIX_PATH C:/Qt/6.7.2/msvc2019_64/lib/cmake/Qt6)
 
 include(qt.cmake)
@@ -42,4 +39,5 @@ target_link_libraries(Fluidify
         Qt::Gui
         Qt::Widgets
         Qt::OpenGL
+        Simulation
 )

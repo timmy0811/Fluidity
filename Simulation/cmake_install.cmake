@@ -1,4 +1,4 @@
-# Install script for directory: F:/Desktop/Fluidify/Fluidify
+# Install script for directory: F:/Desktop/Fluidify/Simulation
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
