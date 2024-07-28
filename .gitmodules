@@ -1,8 +1,8 @@
 [submodule "GraphicsAPI-Abstraction"]
 	path = GraphicsAPI-Abstraction
 	url = https://github.com/timmy0811/GraphicsAPI-Abstraction.git
-[submodule "dependencies\\assimp"]
-	path = dependencies\\assimp
+[submodule "dependencies/assimp"]
+	path = dependencies/assimp
 	url = https://github.com/assimp/assimp.git
 [submodule "dependencies/glfw"]
 	path = dependencies/glfw
