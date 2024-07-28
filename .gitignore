@@ -401,7 +401,7 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
-
+*autogen.*
 
 # CMAKE
 CMakeLists.txt.user
