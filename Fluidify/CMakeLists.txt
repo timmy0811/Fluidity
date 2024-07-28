@@ -12,6 +12,7 @@ find_package(Qt${QT_VERSION_MAJOR}
         Gui
         Widgets
         OpenGL
+        OpenGLWidgets
 )
 qt_standard_project_setup()
 
@@ -39,5 +40,11 @@ target_link_libraries(Fluidify
         Qt::Gui
         Qt::Widgets
         Qt::OpenGL
+        Qt::OpenGLWidgets
+)
+
+target_link_libraries(Fluidify
+    PUBLIC
         Simulation
+        GLWrapper
 )

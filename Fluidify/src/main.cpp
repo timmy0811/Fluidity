@@ -1,4 +1,5 @@
 #include "opengl/instanced/sampleWindow.h"
+//#include "opengl/instanced/rectangleWindow.h"
 
 #include <QtWidgets/QApplication>
 
@@ -11,7 +12,6 @@ int main(int argc, char* argv[])
 	format.setRenderableType(QSurfaceFormat::OpenGL);
 	format.setProfile(QSurfaceFormat::CoreProfile);
 	format.setVersion(4, 1);
-	QSurfaceFormat::setDefaultFormat(format);
 
 	TriangleWindow window;
 

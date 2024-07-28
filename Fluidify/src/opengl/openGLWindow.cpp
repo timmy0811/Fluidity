@@ -24,6 +24,7 @@ void OpenGLWindow::renderNow() {
 		initializeOpenGLFunctions();
 		initialize();
 	}
+
 	render();
 	m_context->swapBuffers(this);
 }

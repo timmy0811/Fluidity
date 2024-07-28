@@ -1,0 +1,18 @@
+[submodule "GraphicsAPI-Abstraction"]
+	path = GraphicsAPI-Abstraction
+	url = https://github.com/timmy0811/GraphicsAPI-Abstraction.git
+[submodule "dependencies\\assimp"]
+	path = dependencies\\assimp
+	url = https://github.com/assimp/assimp.git
+[submodule "dependencies/glfw"]
+	path = dependencies/glfw
+	url = https://github.com/glfw/glfw.git
+[submodule "dependencies/yaml-cpp"]
+	path = dependencies/yaml-cpp
+	url = https://github.com/jbeder/yaml-cpp.git
+[submodule "dependencies/spdlog"]
+	path = dependencies/spdlog
+	url = https://github.com/gabime/spdlog.git
+[submodule "GLWrapper"]
+	path = GLWrapper
+	url = https://github.com/timmy0811/GraphicsAPI-Abstraction.git
