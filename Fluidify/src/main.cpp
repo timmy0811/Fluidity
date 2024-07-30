@@ -2,6 +2,7 @@
 #include <QMainWindow>
 
 #include "Log.h"
+#include "Config.h"
 
 #include "graphics/integration/SimulationViewport.h"
 
@@ -36,7 +37,7 @@ int main(int argc, char* argv[])
 	QMainWindow mainWindow;
 	FluidGL::SimulationViewport* openGLWidget = new FluidGL::SimulationViewport(&mainWindow);
 	mainWindow.setCentralWidget(openGLWidget);
-	mainWindow.resize(800, 600);
+	mainWindow.resize(FLD::conf.WIN_WIDTH, FLD::conf.WIN_HEIGHT);
 	mainWindow.show();
 
 	return a.exec();

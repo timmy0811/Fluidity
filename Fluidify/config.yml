@@ -1,0 +1,4 @@
+Config:
+  Application:
+    WindowWidth: 800
+    WindowHeight: 600
