@@ -18,11 +18,14 @@
 int main(int argc, char* argv[])
 {
 #ifdef DEBUG_LOG
+#pragma warning( push )
+#pragma warning( disable : 4996 )
 	// Allocates console and show it
 	AllocConsole();
 	freopen("CONOUT$", "w", stdout);
 	freopen("CONOUT$", "w", stderr);
 	freopen("CONIN$", "r", stdin);
+#pragma warning( pop )
 #endif
 
 	API::LogAPI::Init();
