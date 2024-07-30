@@ -16,3 +16,6 @@
 [submodule "GLWrapper"]
 	path = GLWrapper
 	url = https://github.com/timmy0811/GraphicsAPI-Abstraction.git
+[submodule "dependencies/glm"]
+	path = dependencies/glm
+	url = https://github.com/g-truc/glm.git

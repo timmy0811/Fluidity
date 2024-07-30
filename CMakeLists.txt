@@ -66,5 +66,13 @@ add_subdirectory(dependencies/spdlog)
 
 set_target_properties("spdlog" PROPERTIES FOLDER "Dependencies/spdlog")
 
+# glm -> Use header only version GLWrapper/vendor/glm !!!
+add_subdirectory(dependencies/glm)
+
+set(DGLM_BUILD_TESTS OFF CACHE INTERNAL "" FORCE)
+set(DBUILD_SHARED_LIBS OFF CACHE INTERNAL "" FORCE)
+
+set_target_properties("glm" PROPERTIES FOLDER "Dependencies/glm")
+
 # Visual Studio Startup Project
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT Fluidify)

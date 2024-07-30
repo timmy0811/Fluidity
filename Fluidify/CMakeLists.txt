@@ -27,6 +27,13 @@ file(GLOB_RECURSE PROJECT_HEADERS
 
 qt_add_executable(Fluidify ${PROJECT_SOURCES} ${PROJECT_HEADERS})
 
+target_compile_definitions(Fluidify
+    PRIVATE
+        $<$<CONFIG:Debug>:DEBUG>
+        $<$<CONFIG:Release>:RELEASE>
+        $<$<CONFIG:Release>:NO_ASSERTS>
+)
+
 target_include_directories(Fluidify PUBLIC src/)
 
 set_target_properties(Fluidify
