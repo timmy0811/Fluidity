@@ -13,7 +13,7 @@
 #define CAST_CORE_ASSERT(x, ...)
 #else
 #define FLUIDIFY_ASSERT(x, ...) {if(!(x)) { LOG_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
-#define FLUIDIFY__CORE_ASSERT(x, ...) {if(!(x)) { LOG_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
+#define FLUIDIFY_CORE_ASSERT(x, ...) {if(!(x)) { LOG_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
 #endif
 
 namespace FLD {

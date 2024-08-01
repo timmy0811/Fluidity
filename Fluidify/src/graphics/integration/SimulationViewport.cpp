@@ -3,8 +3,14 @@
 #include <API/core/RendererCommand.h>
 #include <API/core/Renderer.h>
 
+#include <Simulation/Sim.h>
+
+#include <vendor/glm/gtc/matrix_transform.hpp>
+
+#include "Config.h"
+
 FluidGL::SimulationViewport::SimulationViewport(QWidget* parent)
-	: OpenGLViewport(parent), orthCamera(-1.f, 1.f, -1.f, 1.f)
+	: OpenGLViewport(parent), orthCamera(0.f, FLD::conf.WIN_WIDTH, 0.f, FLD::conf.WIN_HEIGHT), cellSize({ 0.f, 0.f })
 {
 }
 
@@ -14,11 +20,13 @@ FluidGL::SimulationViewport::~SimulationViewport()
 
 bool FluidGL::SimulationViewport::init()
 {
+	updateCellSize();
+
 	float vertices[3 * 4] = {
-		-0.5f, -0.5f, 0.0f,
-		0.5f, -0.5f, 0.0f,
-		0.5f, 0.5f, 0.0f,
-		-0.5f, 0.5f, 0.0f
+		0.0f		, 0.0f		, 0.0f,
+		cellSize.x	, 0.0f		, 0.0f,
+		cellSize.x	, cellSize.y, 0.0f,
+		0.0f		, cellSize.y, 0.0f
 	};
 
 	// When using instanced rendering only 6 indices are used
@@ -54,27 +62,83 @@ bool FluidGL::SimulationViewport::init()
 	tilingShader.reset(API::Core::Shader::Create("assets/shader/tiling_vert.glsl", "assets/shader/tiling_frag.glsl"));
 	tilingShader->Bind();
 
-	tilingShader->SetUniform4f("u_Color", 0.3f, 0.1f, 0.4f, 1.0f);
 	tilingShader->SetUniformMat4f("u_Transform", glm::mat4(1.f));
+
+	ssbo.reset(API::Core::Buffer::Create(API::Core::Buffer::BufferType::SHADER_STORAGE_BUFFER, NULL, sizeof(int)));
+	ssbo->BindBase(1);
 
 	return true;
 }
 
+bool FluidGL::SimulationViewport::onInit()
+{
+	return init();
+}
+
 void FluidGL::SimulationViewport::onResize()
 {
+	updateCellSize();
+	updateCellVertices();
+
+	orthCamera.UpdateProjectionMat(glm::ortho(0.f, (float)viewportSize.x, 0.f, (float)viewportSize.y, -1.f, 1.f));
+}
+
+void FluidGL::SimulationViewport::onUpdate()
+{
+	// Todo: OnUpdate only executes when viewport changes !!!
+	simulationStep();
+	render();
 }
 
 void FluidGL::SimulationViewport::render()
 {
-	API::Core::RenderCommand::SetClearColor({ 0.15, 0.1, 0.2, 1.0 });
+	API::Core::RenderCommand::SetClearColor({ 0.5, 0.5, 0.2, 1.0 });
 	API::Core::RenderCommand::Clear();
 
 	API::Core::DefaultRendererContext::BeginScene();
 
 	tilingShader->Bind();
 	tilingShader->SetUniformMat4f("u_ViewProjection", orthCamera.GetViewProjectionMat());
+	tilingShader->SetUniform2f("u_TileSize", cellSize.x, cellSize.y);
+	tilingShader->SetUniform2i("u_GridDim", cellResolution.x, cellResolution.y);
 
-	API::Core::DefaultRendererContext::Submit(vao, ibo);
+	API::Core::DefaultRendererContext::SubmitInstancedDraw(vao, ibo, cellResolution.x * cellResolution.y);
 
 	API::Core::DefaultRendererContext::EndScene();
+}
+
+void FluidGL::SimulationViewport::simulationStep()
+{
+	const Sim::DensityGrid& gridData = Sim::getDensityMatrix(cellResolution.x, cellResolution.y);
+	size_t gridSize = gridData.h * gridData.w;
+
+	if (gridData.hasChanged || gridData.hasChangedDim) {
+		ssbo->Bind();
+		ssbo->SetDataDynamic(gridData.mat, gridSize * sizeof(int));
+	}
+}
+
+void FluidGL::SimulationViewport::setResolution(int x, int y)
+{
+	cellResolution = { x, y };
+	updateCellSize();
+	updateCellVertices();
+}
+
+inline void FluidGL::SimulationViewport::updateCellSize()
+{
+	cellSize = { viewportSize.x / float(cellResolution.x), viewportSize.y / (float)cellResolution.y };
+}
+
+void FluidGL::SimulationViewport::updateCellVertices()
+{
+	float vertices[3 * 4] = {
+		0.0f		, 0.0f		, 0.0f,
+		cellSize.x	, 0.0f		, 0.0f,
+		cellSize.x	, cellSize.y, 0.0f,
+		0.0f		, cellSize.y, 0.0f
+	};
+
+	vbo->Empty();
+	vbo->AddVertexData(vertices, sizeof(vertices));
 }

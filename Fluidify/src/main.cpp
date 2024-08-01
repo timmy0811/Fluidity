@@ -22,9 +22,9 @@ int main(int argc, char* argv[])
 #pragma warning( disable : 4996 )
 	// Allocates console and show it
 	AllocConsole();
-	freopen("CONOUT$", "w", stdout);
-	freopen("CONOUT$", "w", stderr);
-	freopen("CONIN$", "r", stdin);
+	std::ignore = freopen("CONOUT$", "w", stdout);
+	std::ignore = freopen("CONOUT$", "w", stderr);
+	std::ignore = freopen("CONIN$", "r", stdin);
 #pragma warning( pop )
 #endif
 
@@ -42,6 +42,8 @@ int main(int argc, char* argv[])
 	mainWindow.setCentralWidget(openGLWidget);
 	mainWindow.resize(FLD::conf.WIN_WIDTH, FLD::conf.WIN_HEIGHT);
 	mainWindow.show();
+
+	openGLWidget->setResolution(FLD::conf.SIM_RES_X, FLD::conf.SIM_RES_Y);
 
 	return a.exec();
 }

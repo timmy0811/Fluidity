@@ -2,11 +2,12 @@
 
 #include "graphics/integration/OpenGLViewport.h"
 #include "Log.h"
+#include "Config.h"
 
 #include <QDebug>
 
 FluidGL::OpenGLViewport::OpenGLViewport(QWidget* parent)
-	: QOpenGLWidget(parent), parent(parent), size({ 0, 0 }) {
+	: QOpenGLWidget(parent), parent(parent), viewportSize({ FLD::conf.WIN_WIDTH, FLD::conf.WIN_HEIGHT }) {
 }
 
 FluidGL::OpenGLViewport::~OpenGLViewport() {
@@ -20,7 +21,7 @@ void FluidGL::OpenGLViewport::initializeGL() {
 		return;
 	}
 
-	if (!init()) {
+	if (!onInit()) {
 		LOG_FGL_ERROR("Could not initialize the simulation viewport");
 		return;
 	}
@@ -28,7 +29,7 @@ void FluidGL::OpenGLViewport::initializeGL() {
 
 void FluidGL::OpenGLViewport::resizeGL(int w, int h) {
 	glViewport(0, 0, w, h);
-	size = { w, h };
+	viewportSize = { w, h };
 
 	onResize();
 }
@@ -36,5 +37,5 @@ void FluidGL::OpenGLViewport::resizeGL(int w, int h) {
 void FluidGL::OpenGLViewport::paintGL() {
 	// glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	render();
+	onUpdate();
 }

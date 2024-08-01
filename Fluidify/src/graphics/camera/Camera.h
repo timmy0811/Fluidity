@@ -22,6 +22,8 @@ namespace FluidGL {
 		virtual inline const glm::mat4& GetViewProjectionMat() const { return m_ViewProjectionMat; }
 		virtual inline const glm::mat4& GetProjectionMat() const { return m_ProjectionMat; }
 
+		virtual inline void UpdateProjectionMat(const glm::mat4& mat);
+
 	protected:
 		void UpdateViewMat();
 

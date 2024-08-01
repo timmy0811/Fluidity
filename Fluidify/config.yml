@@ -2,3 +2,7 @@ Config:
   Application:
     WindowWidth: 800
     WindowHeight: 600
+    
+  Simulation:
+    ResolutionX: 8
+    ResolutionY: 8

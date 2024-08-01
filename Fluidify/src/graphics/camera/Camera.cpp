@@ -19,6 +19,12 @@ void FluidGL::Camera::LookAt(const glm::vec3& target, const glm::vec3& up)
 	UpdateViewMat();
 }
 
+inline void FluidGL::Camera::UpdateProjectionMat(const glm::mat4& mat)
+{
+	m_ProjectionMat = mat;
+	m_ViewProjectionMat = m_ProjectionMat * m_ViewMat;
+}
+
 void FluidGL::Camera::UpdateViewMat()
 {
 	glm::mat4 rotated = glm::mat4(glm::quat(glm::radians(glm::vec3(m_Rotation.x, m_Rotation.y, m_Rotation.z))));

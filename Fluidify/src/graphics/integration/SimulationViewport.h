@@ -4,6 +4,7 @@
 #include <API/core/VertexBuffer.h>
 #include <API/core/VertexBufferLayout.h>
 #include <API/core/VertexArray.h>
+#include <API/core/Buffer.h>
 
 #include <API/core/Shader.h>
 
@@ -20,9 +21,21 @@ namespace FluidGL {
 		SimulationViewport(QWidget* parent = nullptr);
 		~SimulationViewport();
 
-		virtual bool init() override;
+		virtual bool onInit() override;
 		virtual void onResize() override;
-		virtual void render() override;
+		virtual void onUpdate() override;
+
+		virtual bool init();
+		virtual void render();
+
+		void simulationStep();
+
+		void setResolution(int x, int y);
+		inline const glm::ivec2 getResolution() const { return cellResolution; }
+
+	private:
+		inline void updateCellSize();
+		void updateCellVertices();
 
 	private:
 		FLD::Ref<API::Core::IndexBuffer> ibo;
@@ -30,9 +43,14 @@ namespace FluidGL {
 		FLD::Ref<API::Core::VertexBufferLayout> vbl;
 		FLD::Ref<API::Core::VertexArray> vao;
 
+		FLD::Ref<API::Core::Buffer> ssbo;
+
 		FLD::Ref<API::Core::Shader> tilingShader;
 
 		FluidGL::OrthographicCamera orthCamera;
 		glm::vec3 orthCameraPosition = { 0.f, 0.f, 0.f };
+
+		glm::vec2 cellSize;
+		glm::ivec2 cellResolution = { 64, 64 };
 	};
 }

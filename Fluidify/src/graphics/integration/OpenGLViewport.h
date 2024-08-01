@@ -13,9 +13,9 @@ namespace FluidGL {
 		OpenGLViewport(QWidget* parent = nullptr);
 		~OpenGLViewport();
 
-		virtual bool init() = 0;
+		virtual bool onInit() = 0;
 		virtual void onResize() = 0;
-		virtual void render() = 0;
+		virtual void onUpdate() = 0;
 
 	protected:
 		void initializeGL() override;
@@ -25,6 +25,6 @@ namespace FluidGL {
 	protected:
 		QWidget* parent;
 
-		glm::ivec2 size;
+		glm::ivec2 viewportSize;
 	};
 }
