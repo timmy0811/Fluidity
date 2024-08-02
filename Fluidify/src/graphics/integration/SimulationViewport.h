@@ -37,6 +37,8 @@ namespace FluidGL {
 		inline void updateCellSize();
 		void updateCellVertices();
 
+		void logInit() const;
+
 	private:
 		FLD::Ref<API::Core::IndexBuffer> ibo;
 		FLD::Ref<API::Core::VertexBuffer> vbo;

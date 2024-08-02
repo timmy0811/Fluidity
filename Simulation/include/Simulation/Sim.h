@@ -16,6 +16,7 @@ namespace Sim {
 
 	const DensityGrid& getDensityMatrix(int w, int h) {
 		grid.hasChangedDim = false;
+		// Gets called very often during scaling :(
 		if (grid.w != w || grid.h != h || !grid.mat) {
 			free(grid.mat);
 			grid.mat = (int*)malloc(static_cast<unsigned long long>(w) * h * sizeof(int));

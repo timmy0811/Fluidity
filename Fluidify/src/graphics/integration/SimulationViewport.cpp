@@ -67,6 +67,8 @@ bool FluidGL::SimulationViewport::init()
 	ssbo.reset(API::Core::Buffer::Create(API::Core::Buffer::BufferType::SHADER_STORAGE_BUFFER, NULL, sizeof(int)));
 	ssbo->BindBase(1);
 
+	logInit();
+
 	return true;
 }
 
@@ -114,7 +116,7 @@ void FluidGL::SimulationViewport::simulationStep()
 
 	if (gridData.hasChanged || gridData.hasChangedDim) {
 		ssbo->Bind();
-		ssbo->SetDataDynamic(gridData.mat, gridSize * sizeof(int));
+		ssbo->SetDataDynamic(gridData.mat, (int)(gridSize * sizeof(int)));
 	}
 }
 
@@ -141,4 +143,12 @@ void FluidGL::SimulationViewport::updateCellVertices()
 
 	vbo->Empty();
 	vbo->AddVertexData(vertices, sizeof(vertices));
+}
+
+void FluidGL::SimulationViewport::logInit() const
+{
+	LOG_CORE_TRACE("Detected OpenGL Version: {0}", API::Core::RenderCommand::GetAPIVer());
+	LOG_CORE_TRACE("Detected Renderer: {0}", API::Core::RenderCommand::GetGPUID());
+	LOG_CORE_TRACE("Detected GPU publisher: {0}", API::Core::RenderCommand::GetPublisher());
+	LOG_CORE_TRACE("Detected GLSL Version: {0}", API::Core::RenderCommand::GetShaderLanID());
 }
