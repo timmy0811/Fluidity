@@ -3,7 +3,7 @@
 #include <API/core/RendererCommand.h>
 #include <API/core/Renderer.h>
 
-#include <Simulation/Sim.h>
+#include <Simulation/Solver.h>
 
 #include <vendor/glm/gtc/matrix_transform.hpp>
 
@@ -111,7 +111,7 @@ void FluidGL::SimulationViewport::render()
 
 void FluidGL::SimulationViewport::simulationStep()
 {
-	const Sim::DensityGrid& gridData = Sim::getDensityMatrix(cellResolution.x, cellResolution.y);
+	const Simulation::DensityGrid& gridData = Simulation::Solver::getInstance()->getDensityMatrix(cellResolution.x, cellResolution.y);
 	size_t gridSize = gridData.h * gridData.w;
 
 	if (gridData.hasChanged || gridData.hasChangedDim) {
