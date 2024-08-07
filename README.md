@@ -10,4 +10,4 @@ cd build
 cmake ..
 cmake --build .
 ```
-**IMPORTANT**: You must bring your own Qt installation, set the installation path inside ```./qt.cmake```.
+**IMPORTANT**: You must bring your own Qt installation, set the installation path inside ```./qt_ver.cmake```.
