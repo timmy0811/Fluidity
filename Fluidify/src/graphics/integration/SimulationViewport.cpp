@@ -10,7 +10,7 @@
 #include "Config.h"
 
 FluidGL::SimulationViewport::SimulationViewport(QWidget* parent)
-	: OpenGLViewport(parent), orthCamera(0.f, FLD::conf.WIN_WIDTH, 0.f, FLD::conf.WIN_HEIGHT), cellSize({ 0.f, 0.f })
+	: OpenGLViewport(parent), orthCamera(0.f, this->size().width(), 0.f, this->size().height()), cellSize({ 0.f, 0.f })
 {
 }
 

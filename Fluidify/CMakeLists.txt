@@ -1,4 +1,4 @@
-include(../qt.cmake)
+include(../qt_ver.cmake)
 
 include(qt.cmake)
 
@@ -23,7 +23,10 @@ file(GLOB_RECURSE PROJECT_SOURCES
 file(GLOB_RECURSE PROJECT_HEADERS
     "src/*.h"
     "src/*.hpp"
-    "src/*.ui") 
+    "src/*.ui")
+
+file(GLOB_RECURSE PROJECT_UI 
+    "*.ui")
 
 qt_add_executable(Fluidify ${PROJECT_SOURCES} ${PROJECT_HEADERS})
 
@@ -34,7 +37,8 @@ target_compile_definitions(Fluidify
         $<$<CONFIG:Release>:NO_ASSERTS>
 )
 
-target_include_directories(Fluidify PUBLIC src/)
+target_include_directories(Fluidify PUBLIC src/ ${CMAKE_CURRENT_SOURCE_DIR}
+${CMAKE_CURRENT_BINARY_DIR})
 
 set_target_properties(Fluidify
     PROPERTIES

@@ -1,8 +1,8 @@
 Config:
   Application:
-    WindowWidth: 1024
-    WindowHeight: 1024
+    WindowWidth: 1200
+    WindowHeight: 600
     
   Simulation:
-    ResolutionX: 1024
-    ResolutionY: 1024
+    ResolutionX: 512
+    ResolutionY: 512

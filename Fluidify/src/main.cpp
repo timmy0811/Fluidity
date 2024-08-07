@@ -1,9 +1,9 @@
 #include <QtWidgets/QApplication>
-#include <QMainWindow>
 
 #include "Log.h"
 #include "Config.h"
 
+#include "qt/FluidMainWindow.h"
 #include "graphics/integration/SimulationViewport.h"
 
 #if defined _WIN32 && !defined NDEBUG
@@ -37,13 +37,11 @@ int main(int argc, char* argv[])
 
 	QApplication a(argc, argv);
 
-	QMainWindow mainWindow;
-	FluidGL::SimulationViewport* openGLWidget = new FluidGL::SimulationViewport(&mainWindow);
-	mainWindow.setCentralWidget(openGLWidget);
-	mainWindow.resize(FLD::conf.WIN_WIDTH, FLD::conf.WIN_HEIGHT);
+	FLD::MainWindow mainWindow;
+	//mainWindow.resize(FLD::conf.WIN_WIDTH, FLD::conf.WIN_HEIGHT);
 	mainWindow.show();
 
-	openGLWidget->setResolution(FLD::conf.SIM_RES_X, FLD::conf.SIM_RES_Y);
+	mainWindow.initViewport();
 
 	return a.exec();
 }

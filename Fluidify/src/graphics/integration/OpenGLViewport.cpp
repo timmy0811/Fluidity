@@ -7,7 +7,7 @@
 #include <QDebug>
 
 FluidGL::OpenGLViewport::OpenGLViewport(QWidget* parent)
-	: QOpenGLWidget(parent), parent(parent), viewportSize({ FLD::conf.WIN_WIDTH, FLD::conf.WIN_HEIGHT }) {
+	: QOpenGLWidget(parent), parent(parent), viewportSize({ this->size().width(), this->size().height() }) {
 }
 
 FluidGL::OpenGLViewport::~OpenGLViewport() {
