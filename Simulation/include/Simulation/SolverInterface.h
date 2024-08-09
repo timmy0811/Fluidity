@@ -5,6 +5,8 @@
 namespace Simulation {
 	class ISolver {
 	public:
-		virtual const DensityGrid& getDensityMatrix(int w, int h) = 0;
+		virtual const GridDto& getDensityMatrix(int w, int h) = 0;
+		virtual void step() = 0;
+		virtual bool init(int resolution) = 0;
 	};
 }

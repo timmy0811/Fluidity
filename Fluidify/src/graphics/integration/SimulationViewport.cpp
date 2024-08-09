@@ -9,6 +9,8 @@
 
 #include "Config.h"
 
+#include "Simulation/Solver.h"
+
 FluidGL::SimulationViewport::SimulationViewport(QWidget* parent)
 	: OpenGLViewport(parent), orthCamera(0.f, this->size().width(), 0.f, this->size().height()), cellSize({ 0.f, 0.f })
 {
@@ -64,10 +66,12 @@ bool FluidGL::SimulationViewport::init()
 
 	tilingShader->SetUniformMat4f("u_Transform", glm::mat4(1.f));
 
-	ssbo.reset(API::Core::Buffer::Create(API::Core::Buffer::BufferType::SHADER_STORAGE_BUFFER, NULL, sizeof(int)));
+	ssbo.reset(API::Core::Buffer::Create(API::Core::Buffer::BufferType::SHADER_STORAGE_BUFFER, NULL, sizeof(float)));
 	ssbo->BindBase(1);
 
 	logInit();
+
+	Simulation::Solver::getInstance()->init(64);
 
 	return true;
 }
@@ -111,12 +115,14 @@ void FluidGL::SimulationViewport::render()
 
 void FluidGL::SimulationViewport::simulationStep()
 {
-	const Simulation::DensityGrid& gridData = Simulation::Solver::getInstance()->getDensityMatrix(cellResolution.x, cellResolution.y);
+	Simulation::Solver::getInstance()->step();
+
+	const Simulation::GridDto& gridData = Simulation::Solver::getInstance()->getDensityMatrix(cellResolution.x, cellResolution.y);
 	size_t gridSize = gridData.h * gridData.w;
 
 	if (gridData.hasChanged || gridData.hasChangedDim) {
 		ssbo->Bind();
-		ssbo->SetDataDynamic(gridData.mat, (int)(gridSize * sizeof(int)));
+		ssbo->SetDataDynamic(gridData.mat, (int)(gridSize * sizeof(float)));
 	}
 }
 

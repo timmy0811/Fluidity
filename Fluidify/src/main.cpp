@@ -5,6 +5,7 @@
 
 #include "qt/FluidMainWindow.h"
 #include "graphics/integration/SimulationViewport.h"
+#include "Simulation/Log.h"
 
 #if defined _WIN32 && !defined NDEBUG
 #define DEBUG_LOG
@@ -27,6 +28,9 @@ int main(int argc, char* argv[])
 	std::ignore = freopen("CONIN$", "r", stdin);
 #pragma warning( pop )
 #endif
+
+	Simulation::LogSimulation::Init();
+	Simulation::LogSimulation::GetCoreLogger()->info("Initialized Simulation-Logging");
 
 	API::LogAPI::Init();
 	API::LogAPI::GetCoreLogger()->info("Initialized API-Logging");
