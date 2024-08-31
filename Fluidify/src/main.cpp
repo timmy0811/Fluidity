@@ -3,6 +3,9 @@
 #include "Log.h"
 #include "Config.h"
 
+#include <QTimer>
+#include <QObject>
+
 #include "qt/FluidMainWindow.h"
 #include "graphics/integration/SimulationViewport.h"
 #include "Simulation/Log.h"
@@ -15,6 +18,7 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #endif
+#include <WinSock2.h>
 
 int main(int argc, char* argv[])
 {
@@ -43,9 +47,13 @@ int main(int argc, char* argv[])
 
 	FLD::MainWindow mainWindow;
 	//mainWindow.resize(FLD::conf.WIN_WIDTH, FLD::conf.WIN_HEIGHT);
-	mainWindow.show();
 
+	mainWindow.show();
 	mainWindow.initViewport();
+
+	/*QTimer timer;
+	QObject::connect(&timer, &QTimer::timeout, &mainWindow, &FLD::MainWindow::updateViewport);
+	timer.start(3000);*/
 
 	return a.exec();
 }

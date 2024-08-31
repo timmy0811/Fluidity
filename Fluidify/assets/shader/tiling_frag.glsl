@@ -10,5 +10,5 @@ layout(std430, binding = 1) buffer DensityArrayBuffer {
 flat in int v_InstanceID;
 
 void main() {
-	o_Color = vec4(vec3(densArray[v_InstanceID]), 1.0);
+	o_Color = vec4(vec3(densArray[v_InstanceID] * 0.2), 1.0);
 }

@@ -12,8 +12,10 @@
 #include "Simulation/Solver.h"
 
 FluidGL::SimulationViewport::SimulationViewport(QWidget* parent)
-	: OpenGLViewport(parent), orthCamera(0.f, this->size().width(), 0.f, this->size().height()), cellSize({ 0.f, 0.f })
+	: OpenGLViewport(parent), orthCamera(0.f, this->size().width(), 0.f, this->size().height()), cellSize({ 0.f, 0.f }), timer(new QTimer(this))
 {
+	connect(timer, &QTimer::timeout, this, &FluidGL::SimulationViewport::updateViewport);
+	timer->start(1);
 }
 
 FluidGL::SimulationViewport::~SimulationViewport()
@@ -71,7 +73,10 @@ bool FluidGL::SimulationViewport::init()
 
 	logInit();
 
-	Simulation::Solver::getInstance()->init(64);
+	Simulation::Solver::getInstance()->init(128);
+
+	this->setUpdateBehavior(OpenGLViewport::UpdateBehavior::NoPartialUpdate);
+	this->updatesEnabled();
 
 	return true;
 }
@@ -89,15 +94,39 @@ void FluidGL::SimulationViewport::onResize()
 	orthCamera.UpdateProjectionMat(glm::ortho(0.f, (float)viewportSize.x, 0.f, (float)viewportSize.y, -1.f, 1.f));
 }
 
-void FluidGL::SimulationViewport::onUpdate()
+void FluidGL::SimulationViewport::updateViewport()
 {
-	// Todo: OnUpdate only executes when viewport changes !!!
+	onResize();
+	static auto lastTime = std::chrono::high_resolution_clock::now();
 	simulationStep();
 	render();
+
+	auto currentTime = std::chrono::high_resolution_clock::now();
+	float time = std::chrono::duration<float, std::chrono::milliseconds::period>(currentTime - lastTime).count();
+	lastTime = currentTime;
+	// LOG_CORE_INFO("Stepping at {0} fps", 1000.0 / time);
+
+	Simulation::Solver::getInstance()->setDt(time * 0.001);
+}
+
+void FluidGL::SimulationViewport::onUpdate()
+{
+	updateViewport();
+}
+
+void FluidGL::SimulationViewport::setFramerate(int fps)
+{
+	const int tpf = 1000 / fps;
+	timer->setInterval(tpf);
+	OpenGLViewport::setFramerate(fps);
+
+	LOG_CORE_TRACE("Set framerate to {0} fps with a frametime of {1} ms", fps, tpf);
 }
 
 void FluidGL::SimulationViewport::render()
 {
+	makeCurrent();
+
 	API::Core::RenderCommand::SetClearColor({ 0.5, 0.5, 0.2, 1.0 });
 	API::Core::RenderCommand::Clear();
 
@@ -117,7 +146,7 @@ void FluidGL::SimulationViewport::simulationStep()
 {
 	Simulation::Solver::getInstance()->step();
 
-	const Simulation::GridDto& gridData = Simulation::Solver::getInstance()->getDensityMatrix(cellResolution.x, cellResolution.y);
+	const Simulation::GridDto gridData = Simulation::Solver::getInstance()->getDensityMatrix(cellResolution.x, cellResolution.y);
 	size_t gridSize = gridData.h * gridData.w;
 
 	if (gridData.hasChanged || gridData.hasChangedDim) {
@@ -131,6 +160,45 @@ void FluidGL::SimulationViewport::setResolution(int x, int y)
 	cellResolution = { x, y };
 	updateCellSize();
 	updateCellVertices();
+}
+
+void FluidGL::SimulationViewport::addNodeDens(glm::ivec2 node, float dens)
+{
+	Simulation::Solver::getInstance()->addNodeDens(node.x, node.y, dens);
+}
+
+void FluidGL::SimulationViewport::addNodeVel(glm::ivec2 node, glm::vec2 vel)
+{
+	Simulation::Solver::getInstance()->addNodeVel(node.x, node.y, vel.x, vel.y);
+}
+
+void FluidGL::SimulationViewport::onButtonPress(const FLD::ButtonPressEvent& event)
+{
+	if (prevMousPos.x < 0.f)
+		prevMousPos = { event.pos.x, event.pos.y };
+
+	constexpr float velFac = 50.f;
+
+	switch (event.button) {
+	case FLD::Button::MOUSE_LEFT:
+		Simulation::Solver::getInstance()->addNodeDens(event.pos.x / cellSize.x, event.pos.y / cellSize.y, 15.f);
+
+		glm::vec2 vel = {
+			(event.pos.x - prevMousPos.x) / size().width(),
+			(event.pos.y - prevMousPos.y) / size().height()
+		};
+
+		glm::normalize(vel);
+
+		vel *= velFac;
+
+		Simulation::Solver::getInstance()->addNodeVel(event.pos.x / cellSize.x, event.pos.y / cellSize.y, vel.x, -vel.y);
+		break;
+	default:
+		break;
+	}
+
+	prevMousPos = { event.pos.x, event.pos.y };
 }
 
 inline void FluidGL::SimulationViewport::updateCellSize()

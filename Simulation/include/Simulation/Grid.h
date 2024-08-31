@@ -18,7 +18,7 @@ namespace Simulation {
 	};
 
 	struct GridData {
-		int N = 62;
+		int N = 64;
 		size_t size;
 
 		float dt = 0.1f, diff = 0.f, visc = 0.f;
@@ -37,19 +37,20 @@ namespace Simulation {
 		}
 
 		void clear() {
-			size = std::pow((N + 2), 2.0);
+			size = std::pow(N, 2.0);
+			size_t memSize = sizeof(float) * size;
 
-			memset(u, 0, size);
-			memset(v, 0, size);
-			memset(u_prev, 0, size);
-			memset(v_prev, 0, size);
-			memset(dens, 0, size);
-			memset(dens_prev, 0, size);
+			memset(u, 0, memSize);
+			memset(v, 0, memSize);
+			memset(u_prev, 0, memSize);
+			memset(v_prev, 0, memSize);
+			memset(dens, 0, memSize);
+			memset(dens_prev, 0, memSize);
 		}
 
 		bool resize(int resolution) {
 			N = resolution;
-			size = std::pow((N + 2), 2);
+			size = std::pow(N, 2);
 
 			float* u_t = (float*)realloc(u, size * sizeof(float));
 			float* v_t = (float*)realloc(v, size * sizeof(float));
@@ -76,14 +77,15 @@ namespace Simulation {
 		}
 
 		bool allocate() {
-			size = std::pow((N + 2), 2);
+			size = std::pow(N, 2);
+			size_t memSize = sizeof(float) * size;
 
-			u = (float*)malloc(size * sizeof(float));
-			v = (float*)malloc(size * sizeof(float));
-			u_prev = (float*)malloc(size * sizeof(float));
-			v_prev = (float*)malloc(size * sizeof(float));
-			dens = (float*)malloc(size * sizeof(float));
-			dens_prev = (float*)malloc(size * sizeof(float));
+			u = (float*)malloc(memSize);
+			v = (float*)malloc(memSize);
+			u_prev = (float*)malloc(memSize);
+			v_prev = (float*)malloc(memSize);
+			dens = (float*)malloc(memSize);
+			dens_prev = (float*)malloc(memSize);
 
 			if (!u || !v || !u_prev || !v_prev || !dens || !dens_prev) {
 				LOG_SIM_ERROR("Cannot allocate simulation data");

@@ -4,5 +4,5 @@ Config:
     WindowHeight: 600
     
   Simulation:
-    ResolutionX: 64
-    ResolutionY: 64
+    ResolutionX: 128
+    ResolutionY: 128

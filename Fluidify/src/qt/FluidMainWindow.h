@@ -14,9 +14,12 @@ namespace FLD {
 		explicit MainWindow(QWidget* parent = nullptr);
 
 		void initViewport();
+		void updateViewport();
 
 	protected:
 		void resizeEvent(QResizeEvent* event) override;
+		void mousePressEvent(QMouseEvent* event) override;
+		void mouseMoveEvent(QMouseEvent* event) override;
 
 	private:
 		void resizeGLViewport();

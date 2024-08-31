@@ -13,6 +13,16 @@ FluidGL::OpenGLViewport::OpenGLViewport(QWidget* parent)
 FluidGL::OpenGLViewport::~OpenGLViewport() {
 }
 
+void FluidGL::OpenGLViewport::setFramerate(int fps)
+{
+	this->fps = fps;
+}
+
+const int FluidGL::OpenGLViewport::getFramerate() const
+{
+	return fps;
+}
+
 void FluidGL::OpenGLViewport::initializeGL() {
 	initializeOpenGLFunctions();
 
@@ -25,6 +35,8 @@ void FluidGL::OpenGLViewport::initializeGL() {
 		LOG_FGL_ERROR("Could not initialize the simulation viewport");
 		return;
 	}
+
+	// format().setSwapInterval(1);
 }
 
 void FluidGL::OpenGLViewport::resizeGL(int w, int h) {
@@ -35,7 +47,5 @@ void FluidGL::OpenGLViewport::resizeGL(int w, int h) {
 }
 
 void FluidGL::OpenGLViewport::paintGL() {
-	// glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	onUpdate();
 }

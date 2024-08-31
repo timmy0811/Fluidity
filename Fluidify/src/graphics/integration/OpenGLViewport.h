@@ -2,6 +2,8 @@
 
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
+#include <QMouseEvent>
+#include <QTimer>
 
 #include <vendor/glm/glm.hpp>
 
@@ -17,6 +19,9 @@ namespace FluidGL {
 		virtual void onResize() = 0;
 		virtual void onUpdate() = 0;
 
+		virtual void setFramerate(int fps);
+		inline const int getFramerate() const;
+
 	protected:
 		void initializeGL() override;
 		void resizeGL(int w, int h) override;
@@ -26,5 +31,6 @@ namespace FluidGL {
 		QWidget* parent;
 
 		glm::ivec2 viewportSize;
+		int fps;
 	};
 }

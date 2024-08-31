@@ -13,6 +13,7 @@
 #include "Core.h"
 #include "graphics/integration/OpenGLViewport.h"
 #include "graphics/camera/OrthographicCamera.h"
+#include "graphics/Input.h"
 
 namespace FluidGL {
 	class SimulationViewport : public OpenGLViewport
@@ -25,6 +26,8 @@ namespace FluidGL {
 		virtual void onResize() override;
 		virtual void onUpdate() override;
 
+		virtual void setFramerate(int fps) override;
+
 		virtual bool init();
 		virtual void render();
 
@@ -32,6 +35,13 @@ namespace FluidGL {
 
 		void setResolution(int x, int y);
 		inline const glm::ivec2 getResolution() const { return cellResolution; }
+
+		inline void addNodeDens(glm::ivec2 node, float dens);
+		inline void addNodeVel(glm::ivec2 node, glm::vec2 vel);
+
+		void onButtonPress(const FLD::ButtonPressEvent& event);
+
+		void updateViewport();
 
 	private:
 		inline void updateCellSize();
@@ -54,5 +64,9 @@ namespace FluidGL {
 
 		glm::vec2 cellSize;
 		glm::ivec2 cellResolution = { 64, 64 };
+
+		glm::vec2 prevMousPos = { -1.f, -1.f };
+
+		QTimer* timer;
 	};
 }
