@@ -92,6 +92,8 @@ bool FluidGL::SimulationViewport::onInit()
 
 void FluidGL::SimulationViewport::onResize()
 {
+	gltViewport(viewportSize.x, viewportSize.y);
+
 	updateCellSize();
 	updateCellVertices();
 
@@ -109,7 +111,9 @@ void FluidGL::SimulationViewport::updateViewport()
 	float time = std::chrono::duration<float, std::chrono::milliseconds::period>(currentTime - lastTime).count();
 	lastTime = currentTime;
 
-	gltSetText(textHUD, fmt::format("{0} fps, {1:.2f} ms", (int)(1000.0 / time), time).c_str());
+	const int fps = (int)(1000.0 / time);
+	static int fpsm = fps > fpsm ? fps : fpsm;
+	gltSetText(textHUD, fmt::format("{} fps [max {} fps], {:.2f} ms", fps, fpsm, time).c_str());
 
 	Simulation::Solver::getInstance()->setDt(time * 0.001);
 }

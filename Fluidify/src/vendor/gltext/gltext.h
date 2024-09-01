@@ -296,7 +296,7 @@ extern "C" {
 		int strLength = 0;
 
 		if (string)
-			strLength = strlen(string);
+			strLength = (int)strlen(string);
 
 		if (strLength)
 		{
