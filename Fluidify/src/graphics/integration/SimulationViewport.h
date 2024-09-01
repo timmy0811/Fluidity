@@ -69,6 +69,6 @@ namespace FluidGL {
 		glm::vec2 prevMousPos = { -1.f, -1.f };
 
 		QTimer* timer;
-		GLTtext* text;
+		GLTtext* textHUD;
 	};
 }

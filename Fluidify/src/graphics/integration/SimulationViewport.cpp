@@ -20,7 +20,7 @@ FluidGL::SimulationViewport::SimulationViewport(QWidget* parent)
 
 FluidGL::SimulationViewport::~SimulationViewport()
 {
-	gltDeleteText(text);
+	gltDeleteText(textHUD);
 	gltTerminate();
 }
 
@@ -108,7 +108,8 @@ void FluidGL::SimulationViewport::updateViewport()
 	auto currentTime = std::chrono::high_resolution_clock::now();
 	float time = std::chrono::duration<float, std::chrono::milliseconds::period>(currentTime - lastTime).count();
 	lastTime = currentTime;
-	// LOG_CORE_INFO("Stepping at {0} fps", 1000.0 / time);
+
+	gltSetText(textHUD, fmt::format("{0} fps, {1:.2f} ms", (int)(1000.0 / time), time).c_str());
 
 	Simulation::Solver::getInstance()->setDt(time * 0.001);
 }
@@ -145,7 +146,7 @@ void FluidGL::SimulationViewport::render()
 
 	gltBeginDraw();
 	gltColor(1.f, 1.f, 1.f, 1.f);
-	gltDrawText2D(text, 10, 10, 1);
+	gltDrawText2D(textHUD, 10, 10, 1);
 	gltEndDraw();
 
 	API::Core::DefaultRendererContext::EndScene();
@@ -239,6 +240,5 @@ void FluidGL::SimulationViewport::logInit() const
 void FluidGL::SimulationViewport::gltextInit()
 {
 	gltInit();
-	text = gltCreateText();
-	gltSetText(text, "Hello, World!");
+	textHUD = gltCreateText();
 }
