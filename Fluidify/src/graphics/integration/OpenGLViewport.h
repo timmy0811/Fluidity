@@ -1,5 +1,10 @@
 #pragma once
 
+#include <GL/glew.h>
+
+#define GLT_IMPLEMENTATION
+#include "vendor/gltext/gltext.h"
+
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
 #include <QMouseEvent>

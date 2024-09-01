@@ -20,6 +20,8 @@ FluidGL::SimulationViewport::SimulationViewport(QWidget* parent)
 
 FluidGL::SimulationViewport::~SimulationViewport()
 {
+	gltDeleteText(text);
+	gltTerminate();
 }
 
 bool FluidGL::SimulationViewport::init()
@@ -77,6 +79,8 @@ bool FluidGL::SimulationViewport::init()
 
 	this->setUpdateBehavior(OpenGLViewport::UpdateBehavior::NoPartialUpdate);
 	this->updatesEnabled();
+
+	gltextInit();
 
 	return true;
 }
@@ -138,6 +142,11 @@ void FluidGL::SimulationViewport::render()
 	tilingShader->SetUniform2i("u_GridDim", cellResolution.x, cellResolution.y);
 
 	API::Core::DefaultRendererContext::SubmitInstancedDraw(vao, ibo, cellResolution.x * cellResolution.y);
+
+	gltBeginDraw();
+	gltColor(1.f, 1.f, 1.f, 1.f);
+	gltDrawText2D(text, 10, 10, 1);
+	gltEndDraw();
 
 	API::Core::DefaultRendererContext::EndScene();
 }
@@ -225,4 +234,11 @@ void FluidGL::SimulationViewport::logInit() const
 	LOG_CORE_TRACE("Detected Renderer: {0}", API::Core::RenderCommand::GetGPUID());
 	LOG_CORE_TRACE("Detected GPU publisher: {0}", API::Core::RenderCommand::GetPublisher());
 	LOG_CORE_TRACE("Detected GLSL Version: {0}", API::Core::RenderCommand::GetShaderLanID());
+}
+
+void FluidGL::SimulationViewport::gltextInit()
+{
+	gltInit();
+	text = gltCreateText();
+	gltSetText(text, "Hello, World!");
 }

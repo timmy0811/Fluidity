@@ -48,6 +48,7 @@ namespace FluidGL {
 		void updateCellVertices();
 
 		void logInit() const;
+		void gltextInit();
 
 	private:
 		FLD::Ref<API::Core::IndexBuffer> ibo;
@@ -68,5 +69,6 @@ namespace FluidGL {
 		glm::vec2 prevMousPos = { -1.f, -1.f };
 
 		QTimer* timer;
+		GLTtext* text;
 	};
 }

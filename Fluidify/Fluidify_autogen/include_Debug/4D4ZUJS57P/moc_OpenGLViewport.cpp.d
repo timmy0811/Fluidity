@@ -190,6 +190,7 @@ F:/Desktop/Fluidity/Fluidify/Fluidify_autogen/include_Debug/4D4ZUJS57P/moc_OpenG
   C:/Qt/6.7.2/msvc2019_64/include/QtWidgets/qtwidgetsexports.h \
   C:/Qt/6.7.2/msvc2019_64/include/QtWidgets/qtwidgetsglobal.h \
   C:/Qt/6.7.2/msvc2019_64/include/QtWidgets/qwidget.h \
+  F:/Desktop/Fluidity/Fluidify/src/vendor/gltext/gltext.h \
   F:/Desktop/Fluidity/GLWrapper/src/vendor/glm/common.hpp \
   F:/Desktop/Fluidity/GLWrapper/src/vendor/glm/detail/_fixes.hpp \
   F:/Desktop/Fluidity/GLWrapper/src/vendor/glm/detail/_vectorize.hpp \
@@ -322,4 +323,5 @@ F:/Desktop/Fluidity/Fluidify/Fluidify_autogen/include_Debug/4D4ZUJS57P/moc_OpenG
   F:/Desktop/Fluidity/GLWrapper/src/vendor/glm/vec2.hpp \
   F:/Desktop/Fluidity/GLWrapper/src/vendor/glm/vec3.hpp \
   F:/Desktop/Fluidity/GLWrapper/src/vendor/glm/vec4.hpp \
-  F:/Desktop/Fluidity/GLWrapper/src/vendor/glm/vector_relational.hpp
+  F:/Desktop/Fluidity/GLWrapper/src/vendor/glm/vector_relational.hpp \
+  F:/Desktop/Fluidity/dependencies/glew-2.2.0/include/GL/glew.h

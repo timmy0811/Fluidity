@@ -1,5 +1,3 @@
-#include <GL/glew.h>
-
 #include "graphics/integration/OpenGLViewport.h"
 #include "Log.h"
 #include "Config.h"
