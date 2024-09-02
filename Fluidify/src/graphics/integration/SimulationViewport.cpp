@@ -112,7 +112,17 @@ void FluidGL::SimulationViewport::updateViewport()
 	lastTime = currentTime;
 
 	const int fps = (int)(1000.0 / time);
-	static int fpsm = fps > fpsm ? fps : fpsm;
+	static int fpsm = 0.f;
+	static float timeSinceReset = 0.f;
+	timeSinceReset += time;
+
+	if (timeSinceReset > 5000.f) {
+		timeSinceReset = 0.f;
+		fpsm = 0;
+	}
+
+	fpsm = fps > fpsm ? fps : fpsm;
+
 	gltSetText(textHUD, fmt::format("{} fps [max {} fps], {:.2f} ms", fps, fpsm, time).c_str());
 
 	Simulation::Solver::getInstance()->setDt(time * 0.001);
