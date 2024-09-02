@@ -15,6 +15,7 @@ namespace FLD {
 
 		void initViewport();
 		void updateViewport();
+		void setSimulationFramerate(int fps);
 
 	protected:
 		void resizeEvent(QResizeEvent* event) override;

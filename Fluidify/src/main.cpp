@@ -50,10 +50,7 @@ int main(int argc, char* argv[])
 
 	mainWindow.show();
 	mainWindow.initViewport();
-
-	/*QTimer timer;
-	QObject::connect(&timer, &QTimer::timeout, &mainWindow, &FLD::MainWindow::updateViewport);
-	timer.start(3000);*/
+	mainWindow.setSimulationFramerate(FLD::conf.UPDATE_FRAMERATE);
 
 	return a.exec();
 }

@@ -3,6 +3,9 @@ Config:
     WindowWidth: 1200
     WindowHeight: 600
     
+    UpdateTimerFramerate: 16
+    
   Simulation:
-    ResolutionX: 128
-    ResolutionY: 128
+    Resolution: 128
+    
+  

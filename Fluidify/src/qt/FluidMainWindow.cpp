@@ -4,8 +4,6 @@
 #include "Log.h"
 #include "Config.h"
 
-#include "Config.h"
-
 #include <QtWidgets/qboxlayout.h>
 
 #define WGT_OFFSET_X 30
@@ -26,19 +24,22 @@ FLD::MainWindow::MainWindow(QWidget* parent)
 	connect(ui.btn_Button0, &QPushButton::clicked, this, []() {
 		LOG_CORE_TRACE("Button clicked!");
 		});
-
-	glViewport->setFramerate(12);
 }
 
 void FLD::MainWindow::initViewport()
 {
 	resizeGLViewport();
-	glViewport->setResolution(conf.SIM_RES_X, conf.SIM_RES_Y);
+	glViewport->setResolution(conf.SIM_RES, conf.SIM_RES);
 }
 
 void FLD::MainWindow::updateViewport()
 {
 	glViewport->updateViewport();
+}
+
+void FLD::MainWindow::setSimulationFramerate(int fps)
+{
+	glViewport->setFramerate(fps);
 }
 
 void FLD::MainWindow::resizeEvent(QResizeEvent* event)

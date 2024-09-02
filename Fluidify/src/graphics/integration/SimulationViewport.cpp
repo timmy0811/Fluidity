@@ -15,7 +15,7 @@ FluidGL::SimulationViewport::SimulationViewport(QWidget* parent)
 	: OpenGLViewport(parent), orthCamera(0.f, this->size().width(), 0.f, this->size().height()), cellSize({ 0.f, 0.f }), timer(new QTimer(this))
 {
 	connect(timer, &QTimer::timeout, this, &FluidGL::SimulationViewport::updateViewport);
-	timer->start(1);
+	timer->start(0);
 }
 
 FluidGL::SimulationViewport::~SimulationViewport()
@@ -75,7 +75,7 @@ bool FluidGL::SimulationViewport::init()
 
 	logInit();
 
-	Simulation::Solver::getInstance()->init(128);
+	Simulation::Solver::getInstance()->init(FLD::conf.SIM_RES);
 
 	this->setUpdateBehavior(OpenGLViewport::UpdateBehavior::NoPartialUpdate);
 	this->updatesEnabled();
@@ -203,6 +203,8 @@ void FluidGL::SimulationViewport::onButtonPress(const FLD::ButtonPressEvent& eve
 
 	constexpr float velFac = 50.f;
 
+	int posX, posY;
+
 	switch (event.button) {
 	case FLD::Button::MOUSE_LEFT:
 		Simulation::Solver::getInstance()->addNodeDens(event.pos.x / cellSize.x, event.pos.y / cellSize.y, 15.f);
@@ -216,7 +218,13 @@ void FluidGL::SimulationViewport::onButtonPress(const FLD::ButtonPressEvent& eve
 
 		vel *= velFac;
 
-		Simulation::Solver::getInstance()->addNodeVel(event.pos.x / cellSize.x, event.pos.y / cellSize.y, vel.x, -vel.y);
+		posX = event.pos.x / cellSize.x;
+		posY = event.pos.y / cellSize.y;
+
+		Simulation::Solver::getInstance()->addNodeVel(posX, posY, vel.x, -vel.y);
+		Simulation::Solver::getInstance()->addNodeVel(posX + 1, posY, vel.x, -vel.y);
+		Simulation::Solver::getInstance()->addNodeVel(posX, posY + 1, vel.x, -vel.y);
+		Simulation::Solver::getInstance()->addNodeVel(posX + 1, posY + 1, vel.x, -vel.y);
 		break;
 	default:
 		break;
